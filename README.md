@@ -32,8 +32,6 @@ streamlit run web_app/main.py
 ├── images
 │   ├── ipr-logo.png
 │   └── logo_kementerian_ekonomi.png
-├── notebooks
-│   └── update_applications.ipynb
 └── web_app
     ├── __init__.py
     ├── load_data_utils.py
