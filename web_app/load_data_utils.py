@@ -37,26 +37,30 @@ class GetDataFromIPR:
         ### Return
         A pandas dataframe 
         """
-        payload = f'fromDate={startdate}&toDate={enddate}'
+        payload = {
+            'fromDate': startdate,
+            'toDate': enddate
+        }
 
         if self.application_type != 'individual':
             ipr_url = st.secrets["endpoint_url"]["URL_OFFTAKER"]
         else:
             ipr_url = st.secrets["endpoint_url"]["URL_INDIVIDUAL"]
+
         headers = {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'x-api-key': st.secrets["api_key"]["IPR_API_KEY"],
-        'User-Agent': "Mozilla/5.0 (Windows NT 5.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.1.8865.38 Safari/537.36"
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'x-api-key': st.secrets["api_key"]["IPR_API_KEY"],
+            'User-Agent': "Mozilla/5.0 (Windows NT 5.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.1.8865.38 Safari/537.36"
         }
 
         try:
             response_ipr = requests.request(
-                "POST",
+                "GET",
                 url=ipr_url,
                 headers=headers,
-                data=payload,
+                params=payload,
                 verify=False, # https://stackoverflow.com/questions/23013220/max-retries-exceeded-with-url-in-requests
-                timeout=60 # seconds
+                timeout=15 # seconds
             )
 
             logger.info(f"Status code: {response_ipr.status_code}, from {startdate} to {enddate} for {self.application_type}")
